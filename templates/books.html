@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线网络小说管理系统</title>
+</head>
+<body>
+
+<form method="POST">
+    {# 没有这句话，就不能进行登录 #}
+    {{ form.csrf_token() }}
+    {{ form.author.label }}{{ form.author }}<br>
+    {{ form.book.label }}{{ form.book }}<br>
+    {{ form.submit }}<br>
+</form>
+
+{# 利用遍历来获取闪现的消息 #}
+{% for message in get_flashed_messages() %}
+    {{ message }}
+{% endfor %}
+
+<hr>
+<ul>
+    {% for author in authors %}
+        <li>{{ author.name }}<a href="{{ url_for('delete_author',author_id = author.id) }}">删除</a></li>
+        <ul>
+            {% for book in author.books %}
+                <li>{{ book.name }}<a href="{{ url_for('delete_book',book_id = book.id) }}">删除</a></li>
+            {% else %}
+                <li>暂无书籍</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
